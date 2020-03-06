@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <style>
+        *,html,body{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            overflow-y: hidden; 
+        }
+        #wrap{
+            width: 100%;
+            height: 100vh;
+        }        
+        .box{
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .myImg{
+            width: 50%;
+            height: 80%;
+            border: 1px solid white;
+            top: 0;
+            left: 25%;
+            position: relative;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 1s;
+            
+        }
+        .boxMyImg{
+            width: 50%;
+            height: 50%;
+            transition: all 1s;
+        }
+        .profile{
+            width: 90%;
+            height: 90%;
+            left: 90%;
+            position: relative;
+            opacity: 0;
+        }    
+        .boxProfile{
+            width: 500px;
+            height: 300px;
+        }
+        
+        
+        .box:nth-child(1){
+            background-color: midnightblue;
+        }
+        .bgImg{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        
+        .box:nth-child(2){
+            padding-top: 11%;
+            background-color: snow;
+            
+        }
+        .boxSection{
+            display: flex;
+            justify-content: center;
+        }
+        .box:nth-child(3){
+            padding-top: 11%;
+            background-color: #262626;    
+        }
+        .box:nth-child(4){
+            padding-top: 11%;
+            background-color: white;    
+        }
+        .box:nth-child(5){
+            padding-top: 11%;
+            background-color: gray;    
+        }
+        #canvas { /* snow field*/
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
+        #canvasNav { /* snow field*/
+            position: absolute;
+            width: 100%;
+            height: 10vh;
+            z-index: 0;
+            display: none;
+        }
+        .welcome{
+            width: 75%;
+            height: 20%;
+            position: relative;
+            margin: auto;
+            top: 5%;
+            border-radius: 50%;
+            text-align:center;
+        }
+        .welcome div{
+            
+        }
+        
+        p.typing-txt{
+            display: none;
+        }
+        .typing {
+        /*       position: absolute;*/ 
+            display: inline-block; 
+            animation-name: cursor; 
+            animation-duration: 0.2s; 
+            animation-iteration-count: infinite; 
+            
+            position: relative;
+            top: 35%;
+            
+            font-size: 230%;
+            color: black;
+            text-shadow:
+            -1px -1px 0 snow,
+            1px -1px 0 snow,
+            -1px 1px 0 snow,
+            1px 1px 0 snow;
+        }
+/*        .nav{
+            position: fixed;
+            overflow: hidden;
+            top: 0;
+            padding-left: 60px;
+            width: 100%;
+            height: 60px;
+            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+            background-color: #fff;
+            font-size: 1.1em;
+            z-index: 901;
+            display: flex;
+            box-shadow: 0px 0px 13px 0px black;
+        }
+        .nav a{
+            margin: 1% 20px 20px 0;
+            text-decoration: none;
+            color: black;
+        }
+        .nav a div{
+            width: 75px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-family: sans-serif;
+            font-weight: 700;
+            transition: all 0.813s;
+        }
+        .nav a div:hover{
+            background-color: rgba(255,255,255,0.8);
+        }*/
+        .navTop{
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-left: 60px;
+            width: 100%;
+            height: 60px;
+            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+            background-color: #fff;
+            font-size: 1.1em;
+            z-index: 900;
+            display: flex;
+        }
+        .navTop a{
+            margin: 1% 20px 20px 0;
+            text-decoration: none;
+            color: black;
+            
+        }
+        .navTop a div{
+            width: 75px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-family: sans-serif;
+            font-weight: 700;
+            transition: all 0.813s;
+        }
+        .navTop a:nth-child(1){
+            color: #82bbb5;
+        }
+        .navTop a div:hover{
+            background-color: rgba(180,180,180,0.25);
+        }
+        
+        .ListOJ{
+            content: '';
+            display: inline-block;
+            top: 10px;
+            left: 0;
+            width: 20px;
+            height: 10px;
+            background: #82bbb5;
+            transform: rotate(-45deg);
+            border-radius: 10px;
+        }
+        
+        p{
+            margin: 2px 0;
+            font-weight: 500;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+        }
+        
+        .OJ{
+            text-align: center;
+        }
+        .OJ2{
+            text-align: center;
+            color: snow;
+        }
+        @keyframes cursor{ 
+            0%{border-right: 1px solid #fff}
+            50%{border-right: 1px solid #000}
+            100%{border-right: 1px solid #fff}
+        }
+        .SectionBar {
+            margin: 0 auto 50px;
+            width: 50px;
+            border-top: 18px solid #de6f44;
+            border-right: 50px solid transparent;
+            border-left: 50px solid transparent;
+        }
+        
+        .SkillSection{
+            display: flex;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 5%;
+            transition: all 1s;
+        }
+        .SkillLine{
+            width: 200px;
+            height: 210px;
+            margin: 1%;
+            transition: all 1s;
+        }
+        .SkillBar{
+            height: 10px;
+            width: 150px;
+            background-color: gray;
+            margin: 5px 25px;
+        }
+        .SkillLevel{
+            height: 10px;
+            width: 10px;
+            background-color: orangered;
+  
+        }
+        
+        .icon{
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 5px 25px;
+        }
+        .SkillText{
+            text-align: center;
+            color: snow;
+        }
+        
+        .SkillLine:nth-child(1) > .SkillBar > .SkillLevel{
+
+        }
+        
+        
+        
+        @media(max-width:900px){ /* Mobile */
+            
+            .typing{
+                font-size: 180%;
+            }
+            .welcome{
+                height: 20%;
+            }
+            .boxMyImg{
+
+            }
+            
+            .box:nth-child(2){
+                padding-top: 15%;
+            }
+            .box:nth-child(3){
+                padding-top: 15%;
+            }
+            .box:nth-child(4){
+                padding-top: 15%;
+            }
+            .box:nth-child(5){
+                padding-top: 15%;
+            }
+            .boxSection{
+                flex-direction: column;
+                padding-top: 0;
+            }
+            
+            .myImg{
+                width: 260px;
+                height: 260px;
+            }
+            .boxMyImg{
+                height: 300px;
+            }
+            .navTop a div{
+                width:100px;
+            }
+            .nav a div{
+                width:100px;
+            }
+        }
+        @media(max-width:700px){ /* small */
+            
+            .typing{
+                font-size: 160%;
+            }
+            .welcome{
+                height: 17.5%;
+            }
+            
+            .box:nth-child(2){
+                padding-top: 20%;
+            }
+            .box:nth-child(3){
+                padding-top: 20%;
+            }
+            .box:nth-child(4){
+                padding-top: 20%;
+            }
+            .box:nth-child(5){
+                padding-top: 20%;
+            }
+            .boxMyImg{
+                height: 220px;
+            }
+            .myImg{
+                width: 220px;
+                height: 200px;
+            }
+            .OJ2{
+                display: none;
+            }
+            .box:nth-child(3){
+                padding-top: 0;
+            }
+            .SkillLine{
+                height: 180px;
+            }
+            .icon{
+                width: 110px;
+                height: 110px;
+                margin: 25px 25px;
+            }
+        }
+        @media(max-width:650px){
+            
+            .typing{
+                font-size: 120%;
+            }
+            .welcome{
+                height: 15%;
+            }
+            .box:nth-child(2){
+                padding-top: 23%;
+            }
+            .box:nth-child(3){
+                padding-top: 0;
+            }
+            .box:nth-child(4){
+                padding-top: 23%;
+            }
+            .box:nth-child(5){
+                padding-top: 23%;
+            }
+        }
+        
+    </style>
+
+</head>
+
+<body>
+<!--   <div class="nav">
+       <canvas id="canvasNav"></canvas>
+       <a href="#"><div>Home</div></a>
+        <a href="#"><div>About</div></a>
+        <a href="#"><div>Skills</div></a>
+        <a href="#"><div>Portfolio</div></a>
+        <a href="#"><div>Concat</div></a>
+    </div>-->
+    <div id="wrap">
+       
+        <div class="box"> <!-- Main ------------->
+            <img class="bgImg" src="../img/IA.PNG">
+            <canvas id="canvas"></canvas>
+            <div class="welcome">
+               <p class="typing-txt">안녕하세요 :) 
+                   프로그래머 박관혁입니다.
+               </p>
+               <p class="typing"></p> 
+            </div>
+            <div class="navTop">
+               <a href="#"><div>Home</div></a>
+                <a href="#"><div>About</div></a>
+                <a href="#"><div>Skills</div></a>
+                <a href="#"><div>Portfolio</div></a>
+                <a href="#"><div>Concat</div></a>
+            </div>
+        </div>
+        
+        <div class="box"> <!-- About ------------->
+          <h1 class="OJ">About</h1>
+          <div class="SectionBar"></div>
+           <div class="boxSection">
+                <div class="boxMyImg">
+                    <img class="myImg" src="../img/lionProfile.gif" >
+                </div>
+                <div class="boxProfile">
+                   <div class="profile">
+                        <h2><div class="ListOJ"></div>Profile</h2>
+                        <p>이름: 박관혁</p>
+                        <p>나이: 27세(1994.02.13)</p>
+                        <p>주소: 부산시 북구</p>
+                        <p>연락처: 010-3345-5943</p>
+                        <p>E-mail: alcmskfl17@naver.com</p>
+
+                        <h2><div class="ListOJ"></div>History</h2>
+                        <p>2013.02 ~ 2019.08: 동아대학교 경영정보전공</p>
+                        <p>2019.11 ~ 2020.04: 자바 기반 디지털 컨버전스
+                        <br>[그린컴퓨터아카데미 서면 - 최홍석 강사]</p>
+
+                        <h2><div class="ListOJ"></div>License</h2>
+                        <p>워드프로세스</p>
+                        <p>정보처리기능사</p>
+                    </div> 
+                </div> 
+           </div>
+            
+            
+        </div>
+        <div class="box"> <!-- Skills ------------->
+            <h1 class="OJ2">Skills</h1>
+            <div class="SectionBar"></div>
+            <div class="SkillSection">
+                <div class="SkillLine">
+                    <img class="icon" src="../img/javajpg.jpg">
+                    <p class="SkillText"> Java - 95%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/html.png">
+                    <p class="SkillText"> Html - 90%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/css.png">
+                    <p class="SkillText"> CSS - 70%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/jquery.png">
+                    <p class="SkillText"> jQuery - 80%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/js.png">
+                    <p class="SkillText"> JS - 90%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/phython.jpg">
+                    <p class="SkillText"> Phython - 50%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/mySQL.jpg">
+                    <p class="SkillText"> MySQL - 85%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+                <div class="SkillLine">
+                    <img class="icon" src="../img/android.png">
+                    <p class="SkillText"> Android - 30%</p>
+                    <div class="SkillBar">
+                        <div class="SkillLevel"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box"> <!-- Skills ------------->
+            <h1 class="OJ">Portfolio</h1>
+            <div class="SectionBar"></div>
+            <div class="PortfolioSection"></div>
+        </div>
+        <div class="box"> <!-- Skills ------------->
+            <h1 class="OJ">Contact</h1>
+            <div class="SectionBar"></div>
+            <div class="SkillSection"></div>
+        </div>
+    <script> // function script
+        $(function(){
+            var elm = ".box";
+            var cnt = $(elm).length;
+            $(elm).on("mousewheel DOMMouseScroll",
+            function(e){
+                e.preventDefault();
+
+                var E = e.originalEvent;
+                var delta = 0;
+                if(E.detail){
+                   delta = E.detail* -40;
+                }else{
+                    delta = E.wheelDelta;
+                    if(window.opera){
+                        delta = -delta;
+                    }
+                }
+
+                if(delta<0){ // Scroll Down
+                  if($(this).index() != (cnt-1)){
+                      var next = $(this).next().offset().top;
+                      $("html, body").stop().animate({
+                        scrollTop:next
+                        },500);
+                  }
+                   if($(this).index()==0){ // First page -> next page
+                       onBox2();
+                       //onSubNav();
+                   }else if($(this).index()==1){
+                       offBox2();
+                       onBox3();
+                   }else if($(this).index()==2){
+                       onBox4();
+                   }else if($(this).index()==3){
+                       onBox5();
+                   }
+                }else{ // Scroll Up
+                  if($(this).index() != 0){
+                     var prev = $(this).prev().offset().top;
+                      $("html, body").stop().animate({
+                        scrollTop:prev
+                        },500); 
+                  }
+                  if($(this).index()==1){ //next First Page
+                      navLocation(1);
+                      offBox2();
+                      //onMainNav();
+                  }else if($(this).index()==2){
+                      onBox2();
+                      offBox3();
+                  }else if($(this).index()==3){
+                      onBox3();
+                  }else if($(this).index()==4){
+                      onBox4();
+                  }
+                }
+            });
+        });
+        
+        function onBox2(){
+            navLocation(2);
+            $(".myImg").stop().animate({
+               top: "10%",
+               opacity: "1"
+            },1800);
+            $(".profile").stop().animate({
+               left:"5%",
+               opacity: "1"
+            },1300);
+            $(".boxProfile").stop().animate({
+               width: "100%"
+            },1000);
+            $(".boxMyImg").stop().animate({
+               width: "100%"
+            },1000);
+        }
+        function offBox2(){
+            $(".myImg").stop().animate({
+               top:"5%",
+               opacity: "0"
+           },1000);
+           $(".profile").stop().animate({
+               left:"90%",
+               opacity: "0"
+           },1000);
+        }
+        function onBox3(){
+            navLocation(3);
+            setSkill(1, 95);
+            setSkill(2, 90);
+            setSkill(3, 70);
+            setSkill(4, 80);
+            setSkill(5, 90);
+            setSkill(6, 50);
+            setSkill(7, 85);
+            setSkill(8, 30);
+        }
+        function setSkill(target, level){
+            var tempTarget = ".SkillLine:nth-child(" +target+ 
+                ") > .SkillBar > .SkillLevel"
+            var tempLevel = level*1.5;
+            
+            if(level>70){
+                $(tempTarget).animate({
+                    width: tempLevel,
+                    backgroundColor: "black"
+                }, 1500);
+            } else {
+                $(tempTarget).animate({
+                    width: tempLevel
+                }, 1500);
+            }
+        }
+        function offBox3(){
+            for(var i=1; i<9; i++){
+                setSkill(i, 5);
+            }
+        }
+        function onBox4(){
+            navLocation(4);
+        
+        }
+        function onBox5(){
+            navLocation(5);
+        
+        }
+        function navLocation(location){
+            var index = ".navTop a:nth-child("+location+")";
+            $(".navTop a").css({
+                'color': 'black'
+            });
+            
+            $(index).css({
+                'color': '#82bbb5'
+            });
+        };
+        
+/*        function onMainNav(){
+            $(".nav").stop().animate({
+                height: "0"
+            },800);
+            //$("#canvasNav").fadeOut(400);
+            $(".navTop").stop().animate({
+                opacity: "1"
+            },3000);
+        }
+        function onSubNav(){
+            //$("#canvasNav").fadeIn(400);
+            $(".navTop").stop().animate({
+                opacity: "0"
+            },100);
+            
+            $(".nav").stop().animate({
+                height: "60px"
+            },1350);
+            $(".navTop").stop().animate({
+                opacity: "0"
+            },500);
+        }*/
+    </script>
+    <script type="text/javascript"> ///////////////// snow script
+        window.onload = function(){
+            var mainS = "canvas";
+            snow(mainS);
+/*            var navS = "canvasNav";
+            snow(navS);*/
+            
+            function snow(target){
+                var canvas = document.getElementById(target);
+                var ctx = canvas.getContext("2d");
+                var W = window.innerWidth;
+                var H = window.innerHeight;
+                canvas.width = W;
+                canvas.height = H;
+                var mp = 25; //max particles
+                var particles = [];
+                for(var i = 0; i < mp; i++)
+                {
+                    particles.push({
+                        x: Math.random()*W, //x-coordinate
+                        y: Math.random()*H, //y-coordinate
+                        r: Math.random()*4+1, //radius
+                        d: Math.random()*mp //density
+                    })
+                }
+                function draw()
+                {
+                    ctx.clearRect(0, 0, W, H);
+
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                    ctx.beginPath();
+                    for(var i = 0; i < mp; i++)
+                    {
+                        var p = particles[i];
+                        ctx.moveTo(p.x, p.y);
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+                    }
+                    ctx.fill();
+                    update();
+                }
+                var angle = 0;
+                function update()
+                {
+                    angle += 0.01;
+                    for(var i = 0; i < mp; i++)
+                    {
+                        var p = particles[i];
+                        p.y += Math.cos(angle+p.d) + 1 + p.r/2;
+                        p.x += Math.sin(angle) * 2;
+                        if(p.x > W+5 || p.x < -5 || p.y > H)
+                        {
+                            if(i%3 > 0)
+                            {
+                                particles[i] = {x: Math.random()*W, y: -10, r: p.r, d: p.d};
+                            }
+                            else
+                            {
+                                if(Math.sin(angle) > 0)
+                                {
+                                    particles[i] = {x: -5, y: Math.random()*H, r: p.r, d: p.d};
+                                }
+                                else
+                                {
+                                    particles[i] = {x: W+5, y: Math.random()*H, r: p.r, d: p.d};
+                                }
+                            }
+                        }
+                    }
+                }
+                //animation loop
+                setInterval(draw, 33);
+            } // end snow function
+
+    }
+    </script>
+    <script> // typing script
+        var typingBool = false; 
+        var typingIdx=0; 
+        var typingTxt = $(".typing-txt").text(); // 타이핑될 텍스트를 가져온다 
+        typingTxt=typingTxt.split(""); // 한글자씩 자른다. 
+        if(typingBool==false){ // 타이핑이 진행되지 않았다면 
+           typingBool=true; 
+
+           var tyInt = setInterval(typing,100); // 반복동작 
+         } 
+
+         function typing(){ 
+           if(typingIdx<typingTxt.length){ // 타이핑될 텍스트 길이만큼 반복 
+             $(".typing").append(typingTxt[typingIdx]); // 한글자씩 이어준다. 
+             typingIdx++; 
+           } else{ 
+             clearInterval(tyInt); //끝나면 반복종료 
+           } 
+         }  
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
